@@ -3,306 +3,525 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MIDDLEMAN | Secure Transactions</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231c1d21'/%3E%3Ctext x='32' y='40' font-family='Arial,sans-serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23b5b8c0'%3Edxtz%3C/text%3E%3C/svg%3E">
+<title>MIDDLEMAN | Transactions sécurisées</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+    --bg: #0c0d0f;
+    --card: #16171a;
+    --line: #ffffff14;
+    --violet: #6b6f7a;
+    --violet-2: #9ca0ab;
+    --violet-3: #d4d6dc;
+    --text: #ffffff;
+    --muted: #92929f;
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
 body {
-    background: #080910;
-    color: white;
+    background: var(--bg);
+    color: var(--text);
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-body::before {
+.orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(150px);
+    z-index: -1;
+    pointer-events: none;
+}
+.orb.one { width: 520px; height: 520px; background: #5a5e68; opacity: .2; top: -200px; left: 15%; animation: drift 14s ease-in-out infinite; }
+.orb.two { width: 420px; height: 420px; background: #8a8f9a; opacity: .12; bottom: -150px; right: 5%; animation: drift 18s ease-in-out infinite reverse; }
+
+body::after {
     content: "";
     position: fixed;
-    width: 500px;
-    height: 500px;
-    background: #6535ff;
-    filter: blur(180px);
-    opacity: .18;
-    top: -200px;
-    left: 20%;
+    inset: 0;
     z-index: -1;
+    background-image: radial-gradient(#ffffff0d 1px, transparent 1px);
+    background-size: 34px 34px;
+    mask-image: radial-gradient(ellipse at 50% 20%, #000 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 20%, #000 0%, transparent 70%);
+    pointer-events: none;
 }
 
 nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 25px 8%;
-    border-bottom: 1px solid #ffffff10;
-    background: #080910aa;
-    backdrop-filter: blur(15px);
+    padding: 20px 8%;
+    border-bottom: 1px solid var(--line);
+    background: #0c0d0fb8;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .logo {
-    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
     font-weight: 900;
     letter-spacing: 3px;
 }
-
-.logo span {
-    color: #916aff;
+.logo .mark {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #3a3c42, #55585f);
+    color: #e2e4e8;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: lowercase;
+    box-shadow: 0 0 20px #6b6f7a55;
+    animation: pulse-glow 3s ease-in-out infinite;
 }
+.logo span { color: #9a9ea8; }
 
-nav a {
+nav .links a {
     color: #aaa;
     text-decoration: none;
-    margin-left: 25px;
+    margin-left: 26px;
     font-size: 13px;
-    transition: .3s;
+    font-weight: 500;
+    position: relative;
+    transition: color .3s;
 }
-
-nav a:hover {
-    color: white;
+nav .links a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 2px;
+    background: var(--violet-2);
+    border-radius: 2px;
+    transition: width .3s;
 }
+nav .links a:hover { color: #fff; }
+nav .links a:hover::after { width: 100%; }
 
 .hero {
+    position: relative;
     text-align: center;
-    padding: 120px 20px 100px;
+    padding: 110px 20px 90px;
 }
 
 .badge {
-    display: inline-block;
-    border: 1px solid #704cff66;
-    background: #704cff15;
-    color: #ae9aff;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid #6b6f7a66;
+    background: #6b6f7a1a;
+    color: #c0c3cb;
     padding: 10px 18px;
     border-radius: 50px;
     font-size: 12px;
+    font-weight: 600;
     margin-bottom: 30px;
+}
+.badge.online {
+    border-color: #4ade8066;
+    background: #4ade8014;
+    color: #4ade80;
+}
+.badge .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 0 #4ade8099;
+    animation: ping 2s infinite;
 }
 
 .hero h1 {
-    font-size: clamp(42px, 8vw, 82px);
+    font-size: clamp(44px, 9vw, 88px);
     font-weight: 900;
     letter-spacing: -4px;
-    line-height: 1.1;
+    line-height: 1.05;
 }
-
 .hero h1 span {
-    background: linear-gradient(90deg,#8d67ff,#c5a8ff);
+    background: linear-gradient(90deg, #8b8f9a, #d4d6dc, #8b8f9a);
+    background-size: 200% auto;
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
+    animation: shine 5s linear infinite;
 }
 
 .hero p {
-    color: #92929f;
-    margin: 25px auto;
-    max-width: 550px;
+    color: var(--muted);
+    margin: 28px auto;
+    max-width: 560px;
     line-height: 1.8;
-    font-size: 15px;
+    font-size: 16px;
+}
+
+.hero-shield {
+    position: relative;
+    width: 110px; height: 110px;
+    margin: 0 auto 34px;
+    display: grid; place-items: center;
+}
+.hero-shield i {
+    position: relative;
+    z-index: 2;
+    font-size: 46px;
+    color: #fff;
+    animation: float 3.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 18px #6b6f7a);
+}
+.hero-shield::before,
+.hero-shield::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid #8b8f9a;
+    animation: ring 3s ease-out infinite;
+}
+.hero-shield::after { animation-delay: 1.5s; }
+.hero-shield .core {
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #6b6f7a55, #6b6f7a10 70%);
 }
 
 .button {
-    display: inline-block;
-    padding: 16px 28px;
-    background: linear-gradient(120deg,#754bff,#a17aff);
-    color: white;
-    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 17px 30px;
+    background: linear-gradient(120deg, #6b6f7a, #9ca0ab);
+    color: #fff;
+    border-radius: 12px;
     text-decoration: none;
     font-weight: 700;
-    font-size: 13px;
-    transition: .3s;
-    box-shadow: 0 0 35px #754bff40;
+    font-size: 14px;
+    transition: transform .3s, box-shadow .3s;
+    box-shadow: 0 0 35px #6b6f7a45;
 }
+.button::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -80%;
+    width: 50%; height: 100%;
+    background: linear-gradient(100deg, transparent, #ffffff55, transparent);
+    transform: skewX(-20deg);
+    animation: sweep 3.5s ease-in-out infinite;
+}
+.button:hover { transform: translateY(-5px); box-shadow: 0 0 50px #6b6f7a90; }
+.button i { transition: transform .3s; }
+.button:hover i { transform: translateX(5px); }
 
-.button:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 45px #754bff80;
+.stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 55px;
 }
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 1px solid var(--line);
+    background: #ffffff06;
+    border-radius: 50px;
+    font-size: 12.5px;
+    color: #c9c9d6;
+}
+.stat i { color: var(--violet-2); }
 
-section {
-    padding: 65px 8%;
-}
+section { padding: 70px 8%; }
 
 .section-title {
     text-align: center;
-    font-size: 32px;
-    margin-bottom: 15px;
+    font-size: 34px;
+    margin-bottom: 14px;
     font-weight: 800;
+    letter-spacing: -1px;
 }
-
 .subtitle {
     text-align: center;
     color: #888;
     font-size: 14px;
-    margin-bottom: 45px;
+    margin-bottom: 50px;
 }
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
     max-width: 1000px;
     margin: auto;
 }
 
 .card {
-    background: linear-gradient(145deg,#151521,#0d0d16);
+    position: relative;
+    background: linear-gradient(145deg, #1a1b1e, #101113);
     border: 1px solid #ffffff12;
-    border-radius: 17px;
-    padding: 30px;
-    transition: .3s;
+    border-radius: 20px;
+    padding: 34px 30px;
+    transition: transform .35s, border-color .35s, box-shadow .35s;
+    overflow: hidden;
 }
-
-.card:hover {
-    transform: translateY(-8px);
-    border-color: #8862ff88;
-    box-shadow: 0 10px 40px #754bff18;
+.card::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 160px; height: 160px;
+    background: var(--violet);
+    filter: blur(70px);
+    opacity: 0;
+    transition: opacity .4s;
 }
+.card:hover { transform: translateY(-10px); border-color: #7d818c88; box-shadow: 0 18px 50px #6b6f7a22; }
+.card:hover::before { opacity: .35; }
 
-.card i {
-    font-size: 28px;
-    color: #9875ff;
-    margin-bottom: 22px;
-    animation: float 3s ease-in-out infinite;
+.icon-box {
+    position: relative;
+    width: 62px; height: 62px;
+    display: grid; place-items: center;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #6b6f7a33, #9ca0ab14);
+    border: 1px solid #7d818c55;
+    margin-bottom: 24px;
+    color: #b9bcc5;
+    font-size: 26px;
 }
-
-.card h3 {
-    font-size: 17px;
-    margin-bottom: 12px;
+.icon-box i { animation: float 3s ease-in-out infinite; }
+.icon-box::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 22px;
+    border: 1px dashed #7d818c44;
+    animation: spin 14s linear infinite;
 }
+.card:nth-child(2) .icon-box i { animation-delay: .4s; }
+.card:nth-child(3) .icon-box i { animation-delay: .8s; }
+.card:nth-child(2) .icon-box i.fa-bolt { animation: zap 2.2s ease-in-out infinite; }
 
-.card p {
-    color: #92929f;
-    font-size: 13px;
-    line-height: 1.8;
+.card h3 { font-size: 18px; margin-bottom: 12px; font-weight: 700; }
+.card p { color: var(--muted); font-size: 13.5px; line-height: 1.8; }
+
+.steps {
+    max-width: 900px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 26px;
+    position: relative;
+}
+.step { text-align: center; position: relative; }
+.step .circle {
+    width: 74px; height: 74px;
+    margin: 0 auto 18px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    background: #16171a;
+    border: 1px solid #7d818c66;
+    color: #b9bcc5;
+    font-size: 26px;
+    box-shadow: 0 0 30px #6b6f7a25;
+    transition: transform .3s, box-shadow .3s;
+}
+.step:hover .circle { transform: scale(1.1) rotate(-6deg); box-shadow: 0 0 45px #6b6f7a66; }
+.step h4 { font-size: 15px; margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: 12.5px; line-height: 1.7; }
+.step:not(:last-child)::after {
+    content: "\f061";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    position: absolute;
+    top: 26px;
+    right: -20px;
+    color: #7d818c88;
+    font-size: 14px;
+    animation: nudge 1.8s ease-in-out infinite;
 }
 
 .price-box {
-    max-width: 450px;
+    position: relative;
+    max-width: 460px;
     margin: auto;
     text-align: center;
-    padding: 45px;
-    border: 1px solid #8c68ff55;
-    background: linear-gradient(145deg,#191426,#0e0e18);
-    border-radius: 20px;
-    box-shadow: 0 0 60px #754bff15;
+    padding: 50px 40px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #1c1d21, #101113);
+    isolation: isolate;
+    box-shadow: 0 0 70px #6b6f7a20;
 }
-
-.price {
-    font-size: 65px;
-    font-weight: 900;
-    margin: 20px 0;
+.price-box::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 26px;
+    z-index: -1;
+    background: conic-gradient(from var(--a, 0deg), #6b6f7a, #101113 30%, #d4d6dc 55%, #101113 80%, #6b6f7a);
+    animation: rotate-border 6s linear infinite;
 }
+.price-box::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    z-index: -1;
+    background: linear-gradient(145deg, #1c1d21, #101113);
+}
+@property --a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
 
+.price { font-size: 78px; font-weight: 900; margin: 22px 0 10px; letter-spacing: -3px; }
 .price span {
-    color: #a78aff;
+    background: linear-gradient(90deg, #b5b8c0, #e2e4e8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
+.price-box p { color: #9a9aa8; font-size: 13px; margin-bottom: 26px; }
 
-.price-box p {
-    color: #999;
-    font-size: 13px;
-    margin-bottom: 25px;
-}
+.perks { list-style: none; text-align: left; margin: 0 auto 30px; max-width: 280px; }
+.perks li { display: flex; align-items: center; gap: 12px; font-size: 13.5px; color: #cfcfdc; padding: 8px 0; }
+.perks li i { color: #4ade80; font-size: 14px; }
 
 .payment {
-    max-width: 650px;
+    max-width: 680px;
     margin: auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 20px;
 }
-
 .pay-card {
-    background: #13131d;
+    background: #16171a;
     border: 1px solid #ffffff15;
-    padding: 25px;
-    border-radius: 15px;
+    padding: 32px 25px;
+    border-radius: 20px;
     text-align: center;
+    transition: transform .3s, border-color .3s, box-shadow .3s;
 }
-
+.pay-card:hover { transform: translateY(-8px); border-color: #7d818c88; box-shadow: 0 14px 40px #6b6f7a22; }
 .pay-card i {
-    font-size: 35px;
-    margin-bottom: 15px;
-    color: #a58aff;
+    font-size: 42px;
+    margin-bottom: 18px;
+    color: #b0b3bc;
+    transition: transform .5s;
 }
+.pay-card:hover i { transform: rotateY(360deg) scale(1.1); }
+.pay-card .fa-bitcoin { animation: coin 4s ease-in-out infinite; }
+.pay-card h3 { margin-bottom: 10px; font-size: 18px; }
+.pay-card p { color: #888; font-size: 12.5px; line-height: 1.7; }
 
-.pay-card h3 {
-    margin-bottom: 10px;
-}
-
-.pay-card p {
-    color: #888;
-    font-size: 12px;
-}
-
-.contact {
-    text-align: center;
-    padding: 80px 20px;
-}
-
+.contact { text-align: center; padding: 90px 20px; }
 .contact-buttons {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px;
-    margin-top: 30px;
+    gap: 16px;
+    margin-top: 34px;
 }
-
 .contact-buttons a {
-    padding: 16px 25px;
-    border: 1px solid #ffffff20;
-    border-radius: 10px;
-    color: white;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 17px 30px;
+    border: 1px solid #ffffff22;
+    background: #ffffff06;
+    border-radius: 14px;
+    color: #fff;
     text-decoration: none;
-    transition: .3s;
+    font-weight: 600;
+    transition: transform .3s, background .3s, border-color .3s, box-shadow .3s;
 }
-
+.contact-buttons a i { font-size: 22px; transition: transform .3s; }
 .contact-buttons a:hover {
-    background: #754bff30;
-    border-color: #9875ff;
+    transform: translateY(-5px);
+    background: #6b6f7a30;
+    border-color: #a0a4af;
+    box-shadow: 0 10px 35px #6b6f7a33;
 }
+.contact-buttons a:hover i { transform: scale(1.25) rotate(-8deg); }
+.contact-buttons a.tg i { color: #4cc3ff; }
+.contact-buttons a.dc i { color: #8e9bff; }
 
 footer {
     text-align: center;
-    padding: 30px;
-    border-top: 1px solid #ffffff12;
+    padding: 34px 20px;
+    border-top: 1px solid var(--line);
     color: #666;
     font-size: 12px;
+    line-height: 1.7;
 }
 
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease; }
+.reveal.show { opacity: 1; transform: none; }
 
-@media(max-width:600px) {
-    nav { padding: 20px 5%; }
-    nav a { margin-left: 10px; font-size: 11px; }
-    .hero { padding-top: 85px; }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes drift { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,40px); } }
+@keyframes shine { to { background-position: 200% center; } }
+@keyframes sweep { 0%,60% { left: -80%; } 100% { left: 150%; } }
+@keyframes ring { 0% { transform: scale(.6); opacity: .9; } 100% { transform: scale(1.7); opacity: 0; } }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 #4ade8099; } 70% { box-shadow: 0 0 0 10px #4ade8000; } 100% { box-shadow: 0 0 0 0 #4ade8000; } }
+@keyframes pulse-glow { 0%,100% { box-shadow: 0 0 18px #6b6f7a66; } 50% { box-shadow: 0 0 34px #9ca0ab; } }
+@keyframes zap { 0%,100% { transform: scale(1) rotate(0); } 10% { transform: scale(1.2) rotate(-10deg); } 20% { transform: scale(1) rotate(8deg); } 30% { transform: scale(1.1) rotate(0); } 40% { transform: scale(1); } }
+@keyframes nudge { 0%,100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+@keyframes coin { 0%,100% { transform: rotateY(0); } 50% { transform: rotateY(180deg); } }
+@keyframes rotate-border { to { --a: 360deg; } }
+
+@media (max-width: 700px) {
+    nav { padding: 16px 5%; }
+    nav .links a { margin-left: 14px; font-size: 12px; }
+    .hero { padding-top: 70px; }
     .hero h1 { letter-spacing: -2px; }
     .payment { grid-template-columns: 1fr; }
+    .step:not(:last-child)::after { display: none; }
+    section { padding: 55px 6%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
 }
 </style>
 </head>
 
 <body>
 
+<div class="orb one"></div>
+<div class="orb two"></div>
+
 <nav>
-    <div class="logo">MIDDLE<span>MAN</span></div>
-    <div>
+    <div class="logo"><b class="mark">dxtz</b> MIDDLE<span>MAN</span></div>
+    <div class="links">
         <a href="#services">Services</a>
+        <a href="#etapes">Étapes</a>
         <a href="#pricing">Tarifs</a>
         <a href="#contact">Contact</a>
     </div>
 </nav>
 
 <div class="hero">
-    <div class="badge">
+    <div class="hero-shield">
+        <div class="core"></div>
         <i class="fas fa-shield-halved"></i>
-        SERVICE MIDDLEMAN
+    </div>
+
+    <div class="badge online">
+        <span class="dot"></span>
+        SERVICE MIDDLEMAN · EN LIGNE
     </div>
 
     <h1>DEALS.<br><span>MADE SECURE.</span></h1>
@@ -316,45 +535,78 @@ footer {
     <a href="#pricing" class="button">
         Découvrir nos tarifs <i class="fas fa-arrow-right"></i>
     </a>
+
+    <div class="stats">
+        <div class="stat"><i class="fas fa-lock"></i> Transactions encadrées</div>
+        <div class="stat"><i class="fas fa-tag"></i> Frais fixes</div>
+        <div class="stat"><i class="fas fa-comments"></i> Contact direct</div>
+    </div>
 </div>
 
 <section id="services">
-    <h2 class="section-title">Pourquoi nous choisir ?</h2>
-    <p class="subtitle">Un service pensé pour vos transactions.</p>
+    <h2 class="section-title reveal">Pourquoi nous choisir ?</h2>
+    <p class="subtitle reveal">Un service pensé pour vos transactions.</p>
 
     <div class="cards">
-
-        <div class="card">
-            <i class="fas fa-shield-halved"></i>
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-shield-halved"></i></div>
             <h3>Transactions encadrées</h3>
             <p>Un intermédiaire accompagne les parties pendant la transaction.</p>
         </div>
 
-        <div class="card">
-            <i class="fas fa-bolt"></i>
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-bolt"></i></div>
             <h3>Simple et rapide</h3>
             <p>Contactez-nous pour organiser votre transaction.</p>
         </div>
 
-        <div class="card">
-            <i class="fas fa-eye"></i>
+        <div class="card reveal">
+            <div class="icon-box"><i class="fas fa-eye"></i></div>
             <h3>Transparence</h3>
             <p>Les frais sont annoncés avant chaque transaction.</p>
         </div>
+    </div>
+</section>
 
+<section id="etapes">
+    <h2 class="section-title reveal">Comment ça marche ?</h2>
+    <p class="subtitle reveal">Trois étapes, sans complication.</p>
+
+    <div class="steps">
+        <div class="step reveal">
+            <div class="circle"><i class="fas fa-paper-plane"></i></div>
+            <h4>Contactez-nous</h4>
+            <p>Écrivez-nous sur Telegram ou Discord.</p>
+        </div>
+        <div class="step reveal">
+            <div class="circle"><i class="fas fa-file-signature"></i></div>
+            <h4>Confirmez les frais</h4>
+            <p>Les modalités sont annoncées avant tout paiement.</p>
+        </div>
+        <div class="step reveal">
+            <div class="circle"><i class="fas fa-circle-check"></i></div>
+            <h4>Transaction encadrée</h4>
+            <p>L'intermédiaire accompagne les deux parties.</p>
+        </div>
     </div>
 </section>
 
 <section id="pricing">
-    <h2 class="section-title">Nos tarifs</h2>
-    <p class="subtitle">Un tarif fixe et sans surprise.</p>
+    <h2 class="section-title reveal">Nos tarifs</h2>
+    <p class="subtitle reveal">Un tarif fixe et sans surprise.</p>
 
-    <div class="price-box">
-        <div class="badge">OFFRE UNIQUE</div>
+    <div class="price-box reveal">
+        <div class="badge"><i class="fas fa-crown"></i> OFFRE UNIQUE</div>
 
         <div class="price"><span>15€</span></div>
 
         <p>Frais de service par transaction.</p>
+
+        <ul class="perks">
+            <li><i class="fas fa-circle-check"></i> Tarif fixe</li>
+            <li><i class="fas fa-circle-check"></i> Frais annoncés à l'avance</li>
+            <li><i class="fas fa-circle-check"></i> Contact direct</li>
+        </ul>
 
         <a href="https://t.me/qheeu" class="button">
             <i class="fab fa-telegram"></i> Commencer
@@ -363,40 +615,36 @@ footer {
 </section>
 
 <section id="payments">
-    <h2 class="section-title">Paiements acceptés</h2>
-    <p class="subtitle">Deux méthodes de paiement disponibles.</p>
+    <h2 class="section-title reveal">Paiements acceptés</h2>
+    <p class="subtitle reveal">Deux méthodes de paiement disponibles.</p>
 
     <div class="payment">
-
-        <div class="pay-card">
+        <div class="pay-card reveal">
             <i class="fab fa-paypal"></i>
             <h3>PayPal</h3>
             <p>Paiement via PayPal, selon les modalités convenues.</p>
         </div>
 
-        <div class="pay-card">
+        <div class="pay-card reveal">
             <i class="fab fa-bitcoin"></i>
             <h3>Cryptomonnaies</h3>
             <p>Paiement crypto. Réseau et adresse à confirmer avant envoi.</p>
         </div>
-
     </div>
 </section>
 
 <section class="contact" id="contact">
-    <h2 class="section-title">Besoin d'un Middleman ?</h2>
-    <p class="subtitle">Contactez-nous pour organiser votre transaction.</p>
+    <h2 class="section-title reveal">Besoin d'un Middleman ?</h2>
+    <p class="subtitle reveal">Contactez-nous pour organiser votre transaction.</p>
 
-    <div class="contact-buttons">
-
-        <a href="https://t.me/qheeu">
+    <div class="contact-buttons reveal">
+        <a href="https://t.me/qheeu" class="tg">
             <i class="fab fa-telegram"></i> Telegram
         </a>
 
-        <a href="https://discord.com/users/7xo4">
+        <a href="https://discord.com/users/7xo4" class="dc">
             <i class="fab fa-discord"></i> Discord
         </a>
-
     </div>
 </section>
 
@@ -406,6 +654,18 @@ footer {
     Les modalités, frais et conditions de chaque transaction
     doivent être confirmés avant tout paiement.
 </footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+        }
+    });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
 
 </body>
 </html>
