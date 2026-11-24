@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIDDLEMAN | Secure Transactions</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #080910;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: #6535ff;
+    filter: blur(180px);
+    opacity: .18;
+    top: -200px;
+    left: 20%;
+    z-index: -1;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 8%;
+    border-bottom: 1px solid #ffffff10;
+    background: #080910aa;
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.logo span {
+    color: #916aff;
+}
+
+nav a {
+    color: #aaa;
+    text-decoration: none;
+    margin-left: 25px;
+    font-size: 13px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: white;
+}
+
+.hero {
+    text-align: center;
+    padding: 120px 20px 100px;
+}
+
+.badge {
+    display: inline-block;
+    border: 1px solid #704cff66;
+    background: #704cff15;
+    color: #ae9aff;
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-size: 12px;
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    font-size: clamp(42px, 8vw, 82px);
+    font-weight: 900;
+    letter-spacing: -4px;
+    line-height: 1.1;
+}
+
+.hero h1 span {
+    background: linear-gradient(90deg,#8d67ff,#c5a8ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.hero p {
+    color: #92929f;
+    margin: 25px auto;
+    max-width: 550px;
+    line-height: 1.8;
+    font-size: 15px;
+}
+
+.button {
+    display: inline-block;
+    padding: 16px 28px;
+    background: linear-gradient(120deg,#754bff,#a17aff);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    transition: .3s;
+    box-shadow: 0 0 35px #754bff40;
+}
+
+.button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 45px #754bff80;
+}
+
+section {
+    padding: 65px 8%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 15px;
+    font-weight: 800;
+}
+
+.subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 45px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.card {
+    background: linear-gradient(145deg,#151521,#0d0d16);
+    border: 1px solid #ffffff12;
+    border-radius: 17px;
+    padding: 30px;
+    transition: .3s;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    border-color: #8862ff88;
+    box-shadow: 0 10px 40px #754bff18;
+}
+
+.card i {
+    font-size: 28px;
+    color: #9875ff;
+    margin-bottom: 22px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.card h3 {
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #92929f;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.price-box {
+    max-width: 450px;
+    margin: auto;
+    text-align: center;
+    padding: 45px;
+    border: 1px solid #8c68ff55;
+    background: linear-gradient(145deg,#191426,#0e0e18);
+    border-radius: 20px;
+    box-shadow: 0 0 60px #754bff15;
+}
+
+.price {
+    font-size: 65px;
+    font-weight: 900;
+    margin: 20px 0;
+}
+
+.price span {
+    color: #a78aff;
+}
+
+.price-box p {
+    color: #999;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+.payment {
+    max-width: 650px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.pay-card {
+    background: #13131d;
+    border: 1px solid #ffffff15;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.pay-card i {
+    font-size: 35px;
+    margin-bottom: 15px;
+    color: #a58aff;
+}
+
+.pay-card h3 {
+    margin-bottom: 10px;
+}
+
+.pay-card p {
+    color: #888;
+    font-size: 12px;
+}
+
+.contact {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.contact-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.contact-buttons a {
+    padding: 16px 25px;
+    border: 1px solid #ffffff20;
+    border-radius: 10px;
+    color: white;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.contact-buttons a:hover {
+    background: #754bff30;
+    border-color: #9875ff;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid #ffffff12;
+    color: #666;
+    font-size: 12px;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@media(max-width:600px) {
+    nav { padding: 20px 5%; }
+    nav a { margin-left: 10px; font-size: 11px; }
+    .hero { padding-top: 85px; }
+    .hero h1 { letter-spacing: -2px; }
+    .payment { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">MIDDLE<span>MAN</span></div>
+    <div>
+        <a href="#services">Services</a>
+        <a href="#pricing">Tarifs</a>
+        <a href="#contact">Contact</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <div class="badge">
+        <i class="fas fa-shield-halved"></i>
+        SERVICE MIDDLEMAN
+    </div>
+
+    <h1>DEALS.<br><span>MADE SECURE.</span></h1>
+
+    <p>
+        Facilitez vos transactions avec un intermédiaire.
+        Un service simple, transparent et des frais fixes
+        pour chaque transaction.
+    </p>
+
+    <a href="#pricing" class="button">
+        Découvrir nos tarifs <i class="fas fa-arrow-right"></i>
+    </a>
+</div>
+
+<section id="services">
+    <h2 class="section-title">Pourquoi nous choisir ?</h2>
+    <p class="subtitle">Un service pensé pour vos transactions.</p>
+
+    <div class="cards">
+
+        <div class="card">
+            <i class="fas fa-shield-halved"></i>
+            <h3>Transactions encadrées</h3>
+            <p>Un intermédiaire accompagne les parties pendant la transaction.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-bolt"></i>
+            <h3>Simple et rapide</h3>
+            <p>Contactez-nous pour organiser votre transaction.</p>
+        </div>
+
+        <div class="card">
+            <i class="fas fa-eye"></i>
+            <h3>Transparence</h3>
+            <p>Les frais sont annoncés avant chaque transaction.</p>
+        </div>
+
+    </div>
+</section>
+
+<section id="pricing">
+    <h2 class="section-title">Nos tarifs</h2>
+    <p class="subtitle">Un tarif fixe et sans surprise.</p>
+
+    <div class="price-box">
+        <div class="badge">OFFRE UNIQUE</div>
+
+        <div class="price"><span>15€</span></div>
+
+        <p>Frais de service par transaction.</p>
+
+        <a href="https://t.me/qheeu" class="button">
+            <i class="fab fa-telegram"></i> Commencer
+        </a>
+    </div>
+</section>
+
+<section id="payments">
+    <h2 class="section-title">Paiements acceptés</h2>
+    <p class="subtitle">Deux méthodes de paiement disponibles.</p>
+
+    <div class="payment">
+
+        <div class="pay-card">
+            <i class="fab fa-paypal"></i>
+            <h3>PayPal</h3>
+            <p>Paiement via PayPal, selon les modalités convenues.</p>
+        </div>
+
+        <div class="pay-card">
+            <i class="fab fa-bitcoin"></i>
+            <h3>Cryptomonnaies</h3>
+            <p>Paiement crypto. Réseau et adresse à confirmer avant envoi.</p>
+        </div>
+
+    </div>
+</section>
+
+<section class="contact" id="contact">
+    <h2 class="section-title">Besoin d'un Middleman ?</h2>
+    <p class="subtitle">Contactez-nous pour organiser votre transaction.</p>
+
+    <div class="contact-buttons">
+
+        <a href="https://t.me/qheeu">
+            <i class="fab fa-telegram"></i> Telegram
+        </a>
+
+        <a href="https://discord.com/users/7xo4">
+            <i class="fab fa-discord"></i> Discord
+        </a>
+
+    </div>
+</section>
+
+<footer>
+    © 2026 MIDDLEMAN — Tous droits réservés.
+    <br><br>
+    Les modalités, frais et conditions de chaque transaction
+    doivent être confirmés avant tout paiement.
+</footer>
+
+</body>
+</html>
